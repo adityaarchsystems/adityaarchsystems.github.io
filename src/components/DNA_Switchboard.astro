@@ -1,0 +1,41 @@
+---
+// The DNA Switchboard (Navigation Dock)
+// A horizontal grid positioned precisely at the viewport fold.
+// 16 Surgical Tiles (2x8 Grid).
+
+const tiles = [
+  { id: 'FL', label: 'FOLIO', path: '/' },
+  { id: 'GD', label: 'Global Digital Vault', path: '#' },
+  { id: 'S2', label: 'Shot2Social', path: '#' },
+  { id: 'BK', label: 'Calyx Briefs', path: '/briefs' },
+  { id: 'GS', label: 'Giscus Guestbook', path: '#giscus' },
+  // Placeholders to complete the 16 tile 2x8 grid
+  { id: 'XX', label: 'VOID', path: '#' },
+  { id: 'XX', label: 'VOID', path: '#' },
+  { id: 'XX', label: 'VOID', path: '#' },
+  { id: 'XX', label: 'VOID', path: '#' },
+  { id: 'XX', label: 'VOID', path: '#' },
+  { id: 'XX', label: 'VOID', path: '#' },
+  { id: 'XX', label: 'VOID', path: '#' },
+  { id: 'XX', label: 'VOID', path: '#' },
+  { id: 'XX', label: 'VOID', path: '#' },
+  { id: 'XX', label: 'VOID', path: '#' },
+  { id: 'XX', label: 'VOID', path: '#' }
+];
+---
+
+<nav class="fixed bottom-0 left-0 w-full border-t border-white/5 bg-[#0B0C0E]/90 backdrop-blur-md z-50">
+  <div class="grid grid-cols-8 grid-rows-2 h-[128px]">
+    {tiles.map((tile) => (
+      <a 
+        href={tile.path} 
+        class="group relative flex flex-col items-center justify-center border-r border-b border-white/5 hover:bg-[#C8F135] transition-colors focus:bg-[#C8F135] focus:outline-none"
+        title={tile.label}
+      >
+        <span class="font-mono text-xs font-semibold text-[#F2F2F2]/50 group-hover:text-[#0B0C0E] focus:text-[#0B0C0E] transition-colors uppercase">
+          {tile.id}
+        </span>
+      </a>
+    ))}
+  </div>
+</nav>

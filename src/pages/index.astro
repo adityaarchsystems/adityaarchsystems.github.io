@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DnaSwitchboard from '../components/DNA_Switchboard.astro';
+import Giscus from '../components/Giscus.astro';
+---
+
+<Layout title="CALYX SOVEREIGN HUB">
+  <div class="max-w-4xl mx-auto pt-32 px-8 pb-48">
+    <header class="mb-24">
+      <h1 class="text-6xl tracking-tighter font-black uppercase text-[#F2F2F2]">
+        Sovereign Hub
+      </h1>
+      <p class="font-mono text-xs opacity-50 mt-4 uppercase">
+        System Status: Operational // Awaiting Core Manifestation
+      </p>
+    </header>
+
+    <section class="mb-24 border border-white/5 bg-[#16171D] p-8">
+      <h2 class="font-mono text-sm mb-4 uppercase text-[#C8F135]">Institutional Directives</h2>
+      <p class="text-sm leading-relaxed tracking-tight text-[#F2F2F2]/90">
+        This is the apex terminal for the Calyx Ecosystem. Engineered for zero boilerplate.
+        Aesthetic constraints bound by the Calyx Standard V2.
+      </p>
+    </section>
+
+    <Giscus />
+  </div>
+
+  <DnaSwitchboard />
+</Layout>

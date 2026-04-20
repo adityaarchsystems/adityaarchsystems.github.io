@@ -1,0 +1,37 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DnaSwitchboard from '../../components/DNA_Switchboard.astro';
+import { getCollection } from 'astro:content';
+
+const briefs = await getCollection('briefs');
+briefs.sort((a, b) => new Date(b.data.timestamp).valueOf() - new Date(a.data.timestamp).valueOf());
+---
+
+<Layout title="CALYX BRIEFS // SOVEREIGN FEED">
+  <div class="max-w-4xl mx-auto pt-32 px-8 pb-48">
+    <header class="mb-24">
+      <h1 class="text-6xl tracking-tighter font-black uppercase text-[#F2F2F2]">
+        Sovereign Feed
+      </h1>
+      <p class="font-mono text-xs opacity-50 mt-4 uppercase">
+        Intelligence Architecture // Clinical Audits
+      </p>
+    </header>
+
+    <div class="flex flex-col border-t border-white/5">
+      {briefs.map((brief) => (
+        <article class="py-6 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between transition-opacity hover:opacity-100 opacity-90 gap-4 group">
+          <a href={`/briefs/${(brief.slug || brief.id).replace(/\.md$/, '')}`} class="block focus:outline-none flex-1">
+            <h2 class="text-md font-bold tracking-tight text-[#F2F2F2]/90 group-hover:text-[#C8F135] transition-colors">{brief.data.title}</h2>
+          </a>
+          <div class="flex items-center gap-6 font-mono text-[10px] sm:text-xs text-[#F2F2F2]/50 uppercase shrink-0">
+            <time datetime={brief.data.timestamp}>{new Date(brief.data.timestamp).toISOString().split('T')[0]}</time>
+            <span>{brief.data.readTime}</span>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <DnaSwitchboard />
+</Layout>
