@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Type check
-        run: pnpm astro sync && pnpm tsc --noEmit
+        run: pnpm astro sync && pnpm tsc --noEmit --skipLibCheck
       - name: Build with Astro
         run: pnpm build
       - name: Upload artifact

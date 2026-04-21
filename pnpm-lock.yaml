@@ -8,19 +8,19 @@ importers:
 
   .:
     dependencies:
-      astro:
-        specifier: ^6.1.8
-        version: 6.1.8(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.60.2)(typescript@6.0.3)
-    devDependencies:
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@4.2.3)
       '@tailwindcss/vite':
         specifier: ^4.2.3
         version: 4.2.3(vite@7.3.2(jiti@2.6.1)(lightningcss@1.32.0))
+      astro:
+        specifier: ^6.1.8
+        version: 6.1.8(jiti@2.6.1)(lightningcss@1.32.0)(rollup@4.60.2)(typescript@6.0.3)
       tailwindcss:
         specifier: ^4.2.3
         version: 4.2.3
+    devDependencies:
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
