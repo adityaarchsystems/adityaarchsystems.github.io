@@ -1,30 +1,94 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import DnaSwitchboard from '../components/DNA_Switchboard.astro';
-import Giscus from '../components/Giscus.astro';
+
+const pids = [
+  { id: 'PID_001', name: 'FOLIO_BETA', desc: '[GA4_ANALYTICS_DASHBOARD]', link: '/briefs/PID_001' },
+  { id: 'PID_002', name: 'SHOT2SOCIAL', desc: '[CODE_TO_CONTENT_ENGINE]', link: '/briefs/PID_002' },
+  { id: 'PID_003', name: 'GLOBAL_DIGITAL_VAULT', desc: '[ASSET_INFRASTRUCTURE]', link: '/briefs/PID_003' },
+  { id: 'PID_004', name: 'CALYX_BRIEFS', desc: '[R&D_LOG_DOSSIER]', link: '/briefs' },
+];
 ---
+<Layout title="CALYX COMMAND INTERFACE">
+  <div class="w-full min-h-screen flex flex-col justify-center items-start px-12 md:px-32 relative overflow-hidden" transition:animate="fade">
+    <div class="fixed top-12 left-12 z-20">
+      <h1 class="font-black text-2xl uppercase tracking-widest text-[#F2F2F2]">Calyx Studios</h1>
+      <p class="font-mono text-xs opacity-50 mt-1 text-[#C8F135]">SYSTEM_MANIFEST_v1.0 // PIDs: ACTIVE</p>
+    </div>
 
-<Layout title="CALYX SOVEREIGN HUB">
-  <div class="max-w-4xl mx-auto pt-32 px-8 pb-48">
-    <header class="mb-24">
-      <h1 class="text-6xl tracking-tighter font-black uppercase text-[#F2F2F2]">
-        Sovereign Hub
-      </h1>
-      <p class="font-mono text-xs opacity-50 mt-4 uppercase">
-        System Status: Operational // Awaiting Core Manifestation
-      </p>
-    </header>
+    <div class="w-full max-w-4xl font-mono text-sm uppercase flex flex-col relative z-10 border-t border-white/5">
+      {pids.map((pid) => (
+        <a href={pid.link} class="pid-row block group relative flex items-center justify-between border-b border-white/5 py-8 cursor-crosshair no-underline" data-pid={pid.id} data-name={pid.name} data-desc={pid.desc} data-link={pid.link}>
+          <div class="flex items-center gap-12">
+            <span class="text-[#F2F2F2]/30 group-hover:text-[#C8F135] transition-colors duration-200">{pid.id}</span>
+            <span class="text-[#F2F2F2] font-black tracking-tight text-xl group-hover:text-[#F2F2F2] transition-colors">{pid.name}</span>
+          </div>
+          <span class="text-right opacity-30 group-hover:opacity-100 group-hover:text-[#C8F135] transition-all duration-300 md:block hidden">{pid.desc}</span>
+          <div class="absolute top-0 left-0 w-full h-full bg-white/[0.02] scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-300 pointer-events-none"></div>
+        </a>
+      ))}
+    </div>
 
-    <section class="mb-24 border border-white/5 bg-[#16171D] p-8">
-      <h2 class="font-mono text-sm mb-4 uppercase text-[#C8F135]">Institutional Directives</h2>
-      <p class="text-sm leading-relaxed tracking-tight text-[#F2F2F2]/90">
-        This is the apex terminal for the Calyx Ecosystem. Engineered for zero boilerplate.
-        Aesthetic constraints bound by the Calyx Standard V2.
-      </p>
-    </section>
+    <!-- Dossier Slide-out Panel -->
+    <aside id="dossier-panel" class="fixed top-0 right-0 h-screen w-full md:w-[450px] border-l border-white/10 bg-[#0B0C0E]/95 backdrop-blur-xl transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-50 p-6 flex flex-col">
+      <div class="w-full h-full border border-white/10 bg-[#16171D] p-8 relative flex flex-col">
+        <div class="absolute inset-0 pointer-events-none opacity-[0.03]" style="background-image: linear-gradient(#F2F2F2 1px, transparent 1px), linear-gradient(90deg, #F2F2F2 1px, transparent 1px); background-size: 20px 20px;"></div>
+        
+        <header class="border-b border-white/10 pb-6 mb-8 mt-12 relative z-10">
+          <p id="d-pid" class="font-mono text-sm text-[#C8F135] mb-2">PID_XXX</p>
+          <h2 id="d-name" class="font-black text-4xl tracking-tighter uppercase text-[#F2F2F2]">SYSTEM</h2>
+        </header>
+        
+        <div class="flex-1 font-mono text-xs text-[#F2F2F2]/60 uppercase leading-loose relative z-10">
+          <p id="d-desc" class="mb-8 p-4 bg-white/5 border border-white/5 text-[#F2F2F2]/90">[DESC]</p>
+          <div class="flex flex-col gap-2">
+            <p class="flex justify-between border-b border-white/5 pb-2"><span>Network Status</span><span class="text-[#C8F135]">ONLINE</span></p>
+            <p class="flex justify-between border-b border-white/5 pb-2"><span>Clearance</span><span>LEVEL 4</span></p>
+            <p class="flex justify-between border-b border-white/5 pb-2"><span>Architecture</span><span>VITE_6_EDGE</span></p>
+            <p class="flex justify-between pb-2"><span>Handshake</span><span class="animate-pulse">AWAITING...</span></p>
+          </div>
+        </div>
 
-    <Giscus />
+        <a id="d-link" href="#" class="block w-full py-4 text-center bg-[#F2F2F2] text-[#0B0C0E] font-black text-sm tracking-widest uppercase hover:bg-[#C8F135] transition-colors relative z-10">
+          Execute Handshake
+        </a>
+      </div>
+    </aside>
   </div>
 
-  <DnaSwitchboard />
+  <script>
+    document.addEventListener('astro:page-load', () => {
+      const rows = document.querySelectorAll('.pid-row');
+      const panel = document.getElementById('dossier-panel');
+      const dPid = document.getElementById('d-pid');
+      const dName = document.getElementById('d-name');
+      const dDesc = document.getElementById('d-desc');
+      const dLink = document.getElementById('d-link');
+
+      let timeout: any;
+
+      rows.forEach(row => {
+        row.addEventListener('mouseenter', () => {
+          clearTimeout(timeout);
+          const target = row as HTMLElement;
+          const { pid, name, desc, link } = target.dataset;
+          
+          if(dPid) dPid.textContent = pid || '';
+          if(dName) dName.textContent = name || '';
+          if(dDesc) dDesc.textContent = desc || '';
+          if(dLink) dLink.setAttribute('href', link || '#');
+          
+          panel?.classList.remove('translate-x-full');
+        });
+        
+        row.addEventListener('mouseleave', () => {
+          timeout = setTimeout(() => {
+            panel?.classList.add('translate-x-full');
+          }, 150);
+        });
+      });
+
+      panel?.addEventListener('mouseenter', () => clearTimeout(timeout));
+      panel?.addEventListener('mouseleave', () => panel.classList.add('translate-x-full'));
+    });
+  </script>
 </Layout>
