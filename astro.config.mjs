@@ -9,6 +9,7 @@ export default defineConfig({
     collectionsBackwardsCompat: true
   },
   vite: {
+    // @ts-expect-error - Tailwind v4 Vite plugin TS mismatch with Astro 5
     plugins: [tailwindcss()],
   },
 });
