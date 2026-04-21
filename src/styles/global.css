@@ -1,14 +1,22 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@font-face {
+  font-family: 'Departure Mono';
+  src: url('/fonts/DepartureMono-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-void: #0B0C0E;
   --color-obsidian: #16171D;
   --color-calyx-lime: #C8F135;
   --color-surgical-white: #F2F2F2;
 
-  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-sans: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Departure Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 }
 
 @layer base {
@@ -25,13 +33,40 @@
 body {
   background-color: var(--color-void);
   color: var(--color-surgical-white);
-  /* 40px clincal SVG absolute mesh */
-  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 40 0 L 0 0 0 40' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='0.5'/%3E%3C/svg%3E");
-  background-attachment: fixed;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   margin: 0;
+}
+
+/* Chromatic Aberration */
+.chromatic-text {
+  text-shadow: 1px 0px 0px rgba(255, 0, 0, 0.8), -1px 0px 0px rgba(0, 255, 255, 0.8);
+}
+
+/* Glitch Physics Keyframes */
+@keyframes glitch-anim {
+  0% { transform: translate(0) }
+  20% { transform: translate(-2px, 1px) }
+  40% { transform: translate(-1px, -1px) }
+  60% { transform: translate(2px, 1px) }
+  80% { transform: translate(1px, -1px) }
+  100% { transform: translate(0) }
+}
+
+.hover-glitch:hover {
+  animation: glitch-anim 0.15s cubic-bezier(.25, .46, .45, .94) both;
+}
+
+/* Phosphor Glow */
+.phosphor-glow {
+  filter: drop-shadow(0 0 8px rgba(200, 241, 53, 0.6)) drop-shadow(0 0 16px rgba(200, 241, 53, 0.3));
+}
+
+/* Staggered Typing (Steps) */
+@keyframes typing-stagger {
+  0% { opacity: 0; transform: translateY(2px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 /* Base Body text opacity */
