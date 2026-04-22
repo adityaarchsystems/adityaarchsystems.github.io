@@ -90,3 +90,18 @@ p {
   animation: none;
   opacity: 0;
 }
+
+/* Holographic Typography & Jitter */
+@keyframes holo-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(200, 241, 53, 0.4), 0 0 2px rgba(242, 242, 242, 0.8); }
+  20%, 24%, 55% { opacity: 0.8; text-shadow: none; }
+}
+
+@keyframes text-jitter {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(1px); }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  animation: holo-flicker 4s infinite, text-jitter 0.15s infinite;
+}

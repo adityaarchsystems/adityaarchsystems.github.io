@@ -38,7 +38,7 @@ const { title } = Astro.props;
   <body>
     <!-- Top Command Bar -->
     <nav class="fixed top-0 left-0 w-full h-12 bg-[#16171D] border-b border-white/10 z-[1000] flex justify-between items-center px-6 md:px-12">
-      <a href="/" class="font-mono text-[#F2F2F2] text-[11px] font-bold tracking-widest hover:text-[#C8F135] transition-colors uppercase">[SYSTEM_RESET]</a>
+      <a href="/" class="font-mono text-[#F2F2F2] text-[11px] font-bold tracking-widest hover:text-[#C8F135] transition-colors uppercase">[CALYX_OS_V5.1]</a>
       <span id="bhilai-clock" class="font-mono text-[#C8F135] text-[11px] font-bold uppercase tracking-widest">--:--:--</span>
     </nav>
 
@@ -113,9 +113,9 @@ const { title } = Astro.props;
       });
     </script>
 
-    <!-- ASCII Boot Sequence (Manifestation) -->
-    <div id="boot-sequence" class="fixed inset-0 z-[100000] bg-[#0B0C0E] flex items-center justify-center transition-opacity pointer-events-none" style="transition-duration: 750ms;">
-      <pre class="font-mono text-[#C8F135] text-[10px] sm:text-xs md:text-sm leading-none tracking-widest font-black text-center">
+    <!-- ASCII Boot Sequence (Handshake Gate) -->
+    <div id="boot-sequence" class="fixed inset-0 z-[100000] bg-[#0B0C0E] flex flex-col items-center justify-center transition-all duration-[1500ms]">
+      <pre class="font-mono text-[#C8F135] text-[10px] sm:text-xs md:text-sm leading-none tracking-widest font-black text-center mb-12">
    ██████╗ █████╗ ██╗  ██╗   ██╗██╗  ██╗
   ██╔════╝██╔══██╗██║  ╚██╗ ██╔╝╚██╗██╔╝
   ██║     ███████║██║   ╚████╔╝  ╚███╔╝ 
@@ -123,25 +123,66 @@ const { title } = Astro.props;
   ╚██████╗██║  ██║███████╗██║   ██╔╝ ██╗
    ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝
       </pre>
+      <button id="initialize-btn" class="font-sans font-black text-lg tracking-widest uppercase text-[#0B0C0E] bg-[#C8F135] px-8 py-4 hover:bg-[#F2F2F2] hover:scale-105 transition-all duration-200 cursor-crosshair">
+        [INITIALIZE_SYSTEM]
+      </button>
     </div>
+    
     <script>
       document.addEventListener('astro:page-load', () => {
         const boot = document.getElementById('boot-sequence');
-        if (boot) {
-          setTimeout(() => {
-            boot.style.opacity = '0';
-            setTimeout(() => boot.remove(), 750);
-          }, 100);
+        const initBtn = document.getElementById('initialize-btn');
+        
+        if (sessionStorage.getItem('calyx_initialized') === 'true') {
+          if (boot) boot.remove();
+          if (window.initAudio) window.initAudio();
+        } else if (initBtn && boot) {
+          initBtn.addEventListener('click', () => {
+            if (window.initAudio) window.initAudio();
+            boot.classList.add('opacity-0', 'scale-110', 'pointer-events-none');
+            setTimeout(() => boot.remove(), 1500);
+            sessionStorage.setItem('calyx_initialized', 'true');
+          });
         }
       });
     </script>
 
+    <!-- The Data Stream (Log Feed) -->
+    <div id="data-stream" class="fixed bottom-4 left-4 z-[999] font-mono text-[9px] text-[#F2F2F2]/50 leading-tight w-48 h-32 overflow-hidden flex flex-col justify-end pointer-events-none mask-gradient"></div>
+    <script>
+      setInterval(() => {
+        const stream = document.getElementById('data-stream');
+        if (stream) {
+          const p = document.createElement('p');
+          p.textContent = '> 0x' + Math.random().toString(16).substring(2, 10).toUpperCase() + ' // OK';
+          stream.appendChild(p);
+          if (stream.children.length > 8) stream.firstChild?.remove();
+        }
+      }, 350);
+    </script>
+
     <!-- Tactical Brutalism V4: Texture Engine -->
     <div class="fixed inset-0 pointer-events-none z-[9999]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E'); opacity: 0.04; mix-blend-mode: overlay;"></div>
-    <div class="fixed inset-0 pointer-events-none z-[9999] opacity-30" style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px); background-size: 100% 4px;"></div>
+    <div class="fixed inset-0 pointer-events-none z-[9999] opacity-[0.08]" style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,1) 2px, rgba(0,0,0,1) 4px); background-size: 100% 4px;"></div>
 
-    <main class="w-full min-h-screen relative pt-12 pb-32">
-      <slot />
+    <main class="w-full min-h-screen relative pt-20 pb-32 px-4 md:px-12 flex justify-center">
+      <!-- Mecha HUD Armor Frame -->
+      <div class="w-full max-w-7xl min-h-[85vh] border border-[#C8F135]/20 bg-[#0B0C0E]/60 relative z-10 transition-all" style="clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);">
+        <!-- Internal Accents -->
+        <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#C8F135] pointer-events-none"></div>
+        <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#C8F135] pointer-events-none"></div>
+        
+        <div class="w-full h-full p-8 md:p-12 relative">
+          <slot />
+        </div>
+      </div>
     </main>
+    
+    <style>
+      .mask-gradient {
+        mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+      }
+    </style>
   </body>
 </html>
