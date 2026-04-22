@@ -15,7 +15,7 @@
   --color-calyx-lime: #C8F135;
   --color-surgical-white: #F2F2F2;
 
-  --font-sans: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Orbitron', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Departure Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 }
 
@@ -72,4 +72,21 @@ body {
 /* Base Body text opacity */
 p {
   color: rgba(242, 242, 242, 0.9);
+}
+
+/* Glitch Page Transition Wipe */
+@keyframes glitch-wipe {
+  0% { clip-path: inset(0 0 100% 0); filter: hue-rotate(90deg) contrast(200%); }
+  20% { clip-path: inset(10% 0 80% 0); filter: invert(1); }
+  40% { clip-path: inset(40% 0 50% 0); filter: none; }
+  60% { clip-path: inset(80% 0 10% 0); filter: hue-rotate(-90deg) contrast(200%); }
+  100% { clip-path: inset(0 0 0 0); filter: none; }
+}
+
+::view-transition-new(root) {
+  animation: glitch-wipe 0.5s steps(5, end);
+}
+::view-transition-old(root) {
+  animation: none;
+  opacity: 0;
 }

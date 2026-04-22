@@ -3,24 +3,14 @@ import Layout from '../layouts/Layout.astro';
 
 const pids = [
   { id: 'PID_001', name: 'FOLIO_BETA', desc: '[GA4_ANALYTICS_DASHBOARD]', link: '/briefs/PID_001' },
-  { id: 'PID_002', name: 'CALYX_ARC', desc: '[CLINIC_AUTO_ORCHESTRATION]', link: '/briefs' },
-  { id: 'PID_003', name: 'OMNI_AD_VIBE_SPY', desc: '[AD_INTELLIGENCE_RECON]', link: '/briefs' },
-  { id: 'PID_004', name: 'CALYX_CONTEXT_TDE', desc: '[TACTICAL_DEV_ENV_CORE]', link: '/briefs' },
-  { id: 'PID_005', name: 'CALYX_BRIEFS', desc: '[R&D_DOSSIER_INCL_S2S]', link: '/briefs' },
+  { id: 'PID_002', name: 'CALYX_ARC', desc: '[CLINIC_AUTO_ORCHESTRATION]', link: '/briefs/PID_002' },
+  { id: 'PID_003', name: 'OMNI_AD_VIBE_SPY', desc: '[AD_INTELLIGENCE_RECON]', link: '/briefs/PID_003' },
+  { id: 'PID_004', name: 'CALYX_CONTEXT_TDE', desc: '[TACTICAL_DEV_ENV_CORE]', link: '/briefs/PID_004' },
+  { id: 'PID_005', name: 'CALYX_BRIEFS', desc: '[R&D_DOSSIER_INCL_S2S]', link: '/briefs/PID_005' },
 ];
 ---
 <Layout title="CALYX COMMAND INTERFACE - APEX V4">
-  <!-- Interactive Dynamic HUD Grid Base -->
-  <div class="fixed inset-0 pointer-events-none z-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M 40 0 L 0 0 0 40\' fill=\'none\' stroke=\'rgba(255,255,255,0.05)\' stroke-width=\'0.5\'/%3E%3C/svg%3E'); background-size: 40px 40px; background-attachment: fixed;"></div>
-  
-  <!-- Interactive Dynamic HUD Glow Overlay Mask -->
-  <div id="interactive-grid" class="fixed inset-0 pointer-events-none z-[1]" style="
-    background-image: url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M 40 0 L 0 0 0 40\' fill=\'none\' stroke=\'%23C8F135\' stroke-width=\'1.5\' opacity=\'0.15\'/%3E%3C/svg%3E'); 
-    background-size: 40px 40px; 
-    background-attachment: fixed;
-    mask-image: radial-gradient(200px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), black 0%, transparent 100%);
-    -webkit-mask-image: radial-gradient(200px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), black 0%, transparent 100%);
-  "></div>
+  <!-- Removed Interactive Grid Base (Now in Layout.astro) -->
 
   <!-- Live Coordinate Tracker -->
   <div id="coord-hud" class="fixed top-12 right-12 font-mono text-[11px] text-[#C8F135] z-50 uppercase tracking-widest">
@@ -30,7 +20,7 @@ const pids = [
   <div class="w-full min-h-screen flex flex-col justify-center items-start px-12 md:px-32 relative overflow-hidden" transition:animate="fade">
     <div class="fixed top-12 left-12 z-20">
       <h1 class="font-sans font-black text-2xl uppercase tracking-[-0.07em] text-[#F2F2F2] chromatic-text">Calyx Studios</h1>
-      <p class="font-mono text-[11px] opacity-50 mt-1 text-[#C8F135] uppercase">SYSTEM_MANIFEST_v4.0 // PIDs: ACTIVE</p>
+      <p class="font-mono text-[11px] opacity-50 mt-1 text-[#C8F135] uppercase">V5.0_APEX_TOTAL_DOMINATION // PIDs: ACTIVE</p>
     </div>
 
     <div class="w-full max-w-4xl font-mono uppercase flex flex-col relative z-10 border-t border-white/5">
@@ -47,7 +37,7 @@ const pids = [
     </div>
 
     <!-- Dossier Slide-out Panel -->
-    <aside id="dossier-panel" class="fixed top-0 right-0 h-screen w-full md:w-[450px] border-l border-white/10 bg-[#0B0C0E]/95 backdrop-blur-xl transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-50 p-6 flex flex-col overflow-x-hidden">
+    <aside id="dossier-panel" class="fixed top-0 right-0 h-screen w-full md:w-[450px] border-l border-white/10 bg-[#0B0C0E]/95 backdrop-blur-xl transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] z-50 p-6 flex flex-col overflow-x-hidden" style="clip-path: polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px);">
       <div class="w-full h-full border border-white/10 bg-[#16171D] p-8 relative flex flex-col">
         <div class="absolute inset-0 pointer-events-none opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M 40 0 L 0 0 0 40\' fill=\'none\' stroke=\'rgba(255,255,255,1)\' stroke-width=\'0.5\'/%3E%3C/svg%3E'); background-size: 40px 40px;"></div>
         
@@ -89,16 +79,21 @@ const pids = [
 
   <script>
     document.addEventListener('astro:page-load', () => {
-      const grid = document.getElementById('interactive-grid');
+      // Audio Handshake on Execute Handshake click
+      const initAudioHandler = (e: Event) => {
+        if (window.initAudio) window.initAudio();
+      };
+      
+      const handshakeBtn = document.getElementById('d-link');
+      if (handshakeBtn) {
+        handshakeBtn.addEventListener('click', initAudioHandler);
+      }
+
       const hud = document.getElementById('coord-hud');
       
       document.addEventListener('mousemove', (e) => {
         const x = e.clientX;
         const y = e.clientY;
-        if (grid) {
-          grid.style.setProperty('--mouse-x', `${x}px`);
-          grid.style.setProperty('--mouse-y', `${y}px`);
-        }
         if (hud) {
           hud.textContent = `[X:${String(x).padStart(4,'0')} Y:${String(y).padStart(4,'0')}]`;
         }
@@ -115,6 +110,7 @@ const pids = [
 
       rows.forEach(row => {
         row.addEventListener('mouseenter', () => {
+          if (window.playBlip) window.playBlip();
           clearTimeout(timeout);
           const target = row as HTMLElement;
           const { pid, name, desc, link } = target.dataset;

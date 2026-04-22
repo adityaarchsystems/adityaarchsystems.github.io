@@ -18,20 +18,129 @@ const { title } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     
-    <!-- Google Fonts: Syne and JetBrains fallback -->
+    <!-- Google Fonts: Orbitron and JetBrains fallback -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
     
     <title>{title}</title>
     <ClientRouter />
+    <style>
+      @keyframes sonar-pulse {
+        0%, 100% { opacity: 0.1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(1.02); }
+      }
+      .sonar-grid {
+        animation: sonar-pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+    </style>
   </head>
   <body>
+    <!-- Top Command Bar -->
+    <nav class="fixed top-0 left-0 w-full h-12 bg-[#16171D] border-b border-white/10 z-[1000] flex justify-between items-center px-6 md:px-12">
+      <a href="/" class="font-mono text-[#F2F2F2] text-[11px] font-bold tracking-widest hover:text-[#C8F135] transition-colors uppercase">[SYSTEM_RESET]</a>
+      <span id="bhilai-clock" class="font-mono text-[#C8F135] text-[11px] font-bold uppercase tracking-widest">--:--:--</span>
+    </nav>
+
+    <!-- Interactive Sonar Grid -->
+    <div id="interactive-grid" class="fixed inset-0 pointer-events-none z-[1] sonar-grid" style="
+      background-image: url('data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M 40 0 L 0 0 0 40\' fill=\'none\' stroke=\'%23C8F135\' stroke-width=\'1.5\'/%3E%3C/svg%3E'); 
+      background-size: 40px 40px; 
+      background-attachment: fixed;
+      mask-image: radial-gradient(300px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), black 0%, transparent 100%);
+      -webkit-mask-image: radial-gradient(300px circle at var(--mouse-x, -500px) var(--mouse-y, -500px), black 0%, transparent 100%);
+    "></div>
+    
+    <script>
+      setInterval(() => {
+        const clock = document.getElementById('bhilai-clock');
+        if (clock) {
+          clock.textContent = new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour12: false }) + ' IST';
+        }
+      }, 1000);
+
+      // Global Audio Engine
+      let audioCtx = null;
+      let humOsc = null;
+      let audioInitialized = false;
+
+      window.initAudio = function() {
+        if (audioInitialized) return;
+        audioInitialized = true;
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return;
+        
+        audioCtx = new AudioContextClass();
+        
+        // Sovereign Hum
+        humOsc = audioCtx.createOscillator();
+        humOsc.type = 'sawtooth';
+        humOsc.frequency.value = 55;
+        
+        const humGain = audioCtx.createGain();
+        humGain.gain.value = 0.05;
+        
+        humOsc.connect(humGain);
+        humGain.connect(audioCtx.destination);
+        humOsc.start();
+      };
+
+      window.playBlip = function() {
+        if (!audioCtx || audioCtx.state !== 'running') return;
+        const osc = audioCtx.createOscillator();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.05);
+        
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      };
+
+      document.addEventListener('astro:page-load', () => {
+        const grid = document.getElementById('interactive-grid');
+        if (grid) {
+          document.addEventListener('mousemove', (e) => {
+            grid.style.setProperty('--mouse-x', `${e.clientX}px`);
+            grid.style.setProperty('--mouse-y', `${e.clientY}px`);
+          });
+        }
+      });
+    </script>
+
+    <!-- ASCII Boot Sequence (Manifestation) -->
+    <div id="boot-sequence" class="fixed inset-0 z-[100000] bg-[#0B0C0E] flex items-center justify-center transition-opacity pointer-events-none" style="transition-duration: 750ms;">
+      <pre class="font-mono text-[#C8F135] text-[10px] sm:text-xs md:text-sm leading-none tracking-widest font-black text-center">
+   ██████╗ █████╗ ██╗  ██╗   ██╗██╗  ██╗
+  ██╔════╝██╔══██╗██║  ╚██╗ ██╔╝╚██╗██╔╝
+  ██║     ███████║██║   ╚████╔╝  ╚███╔╝ 
+  ██║     ██╔══██║██║    ╚██╔╝   ██╔██╗ 
+  ╚██████╗██║  ██║███████╗██║   ██╔╝ ██╗
+   ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝  ╚═╝
+      </pre>
+    </div>
+    <script>
+      document.addEventListener('astro:page-load', () => {
+        const boot = document.getElementById('boot-sequence');
+        if (boot) {
+          setTimeout(() => {
+            boot.style.opacity = '0';
+            setTimeout(() => boot.remove(), 750);
+          }, 100);
+        }
+      });
+    </script>
+
     <!-- Tactical Brutalism V4: Texture Engine -->
     <div class="fixed inset-0 pointer-events-none z-[9999]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E'); opacity: 0.04; mix-blend-mode: overlay;"></div>
     <div class="fixed inset-0 pointer-events-none z-[9999] opacity-30" style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px); background-size: 100% 4px;"></div>
 
-    <main class="w-full min-h-screen relative pb-32">
+    <main class="w-full min-h-screen relative pt-12 pb-32">
       <slot />
     </main>
   </body>
